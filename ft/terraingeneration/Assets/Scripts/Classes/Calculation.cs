@@ -123,6 +123,7 @@ public class Calculation
 
         result *= radius * height * vertexDistance;
 
+
         return result;
 
     }

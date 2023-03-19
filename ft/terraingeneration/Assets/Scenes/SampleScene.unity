@@ -335,6 +335,7 @@ MonoBehaviour:
   filter: {fileID: 1644493906}
   interval: 1
   scale: 10
+  generatePlants: 0
 --- !u!4 &1554263158
 Transform:
   m_ObjectHideFlags: 0
@@ -432,7 +433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 250
-  distance: 10
+  distance: 100
   filter: {fileID: 1644493906}
   shapePrefabs:
   - type: 0
