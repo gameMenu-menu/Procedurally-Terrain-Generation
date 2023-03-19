@@ -9,8 +9,6 @@ public class TerrainGenerator : MonoBehaviour
 
     public MeshFilter filter;
 
-
-
     Mesh mesh;
 
     Vector3[] vertices;
@@ -22,11 +20,15 @@ public class TerrainGenerator : MonoBehaviour
 
     public ShapePrefab[] shapePrefabs;
 
+    public PlantGenerator planter;
+
 
     void Start()
     {
         PreparePrefabs();
         GenerateTerrain();
+
+        planter.GeneratePlants();
     }
 
 
@@ -143,9 +145,6 @@ public class TerrainGenerator : MonoBehaviour
                 Vector3 pos = new Vector3(k * distance, 0, i * distance) + center;
                 vertices[index] = pos;
                 index++;
-                Vertex vert = new Vertex();
-                vert.index = index;
-                vert.position = pos;
             }
         }
         

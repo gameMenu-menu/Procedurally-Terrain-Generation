@@ -72,12 +72,6 @@ public struct Shape
     public bool up;
 }
 
-public struct Vertex
-{
-    public Vector3 position;
-    public int index;
-}
-
 public struct HeightMap
 {
     float[ , ] map;

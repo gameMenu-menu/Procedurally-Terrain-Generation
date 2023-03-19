@@ -301,6 +301,55 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1554263156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1554263158}
+  - component: {fileID: 1554263157}
+  m_Layer: 0
+  m_Name: GrassDesigner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1554263157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554263156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2444b3b063ea8e44eae9c984bac39ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plantPrefabs:
+  - {fileID: 6508273729819345569, guid: 39d62f7de59474f45872f4d29a459c57, type: 3}
+  filter: {fileID: 1644493906}
+  interval: 1
+  scale: 10
+--- !u!4 &1554263158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554263156}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1022.1227, y: 0.27884787, z: 1479.8859}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1644493904
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,13 +436,13 @@ MonoBehaviour:
   filter: {fileID: 1644493906}
   shapePrefabs:
   - type: 0
-    radius: 40
+    radius: 35
     percent: 10
     height: 0.4
     heightMap: {fileID: 2800000, guid: 7b5eed9df3a7aa6449e0d07af3eee9e7, type: 3}
     up: 1
   - type: 0
-    radius: 40
+    radius: 30
     percent: 10
     height: 0.6
     heightMap: {fileID: 2800000, guid: 2c3ea984308f31945ad3f47526c68c0e, type: 3}
@@ -411,11 +460,12 @@ MonoBehaviour:
     heightMap: {fileID: 0}
     up: 0
   - type: 1
-    radius: 30
+    radius: 20
     percent: 5
     height: 0.7
     heightMap: {fileID: 2800000, guid: f5a3c840cb14d03439a089c9c980d690, type: 3}
     up: 0
+  planter: {fileID: 1554263157}
 --- !u!4 &1644493908
 Transform:
   m_ObjectHideFlags: 0
