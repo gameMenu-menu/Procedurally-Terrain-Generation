@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 1554263158}
   - component: {fileID: 1554263157}
   m_Layer: 0
-  m_Name: GrassDesigner
+  m_Name: PlantGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,11 +331,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plantPrefabs:
-  - {fileID: 6508273729819345569, guid: 39d62f7de59474f45872f4d29a459c57, type: 3}
+  - {fileID: 1446381009877013536, guid: 64004a32182356d42a9aa7595b594fd4, type: 3}
+  plants:
+  - percent: 0.02
+    startSlope: 0
+    endSlope: 50
+    prefab: {fileID: 1446381009877013536, guid: 64004a32182356d42a9aa7595b594fd4, type: 3}
   filter: {fileID: 1644493906}
   interval: 1
   scale: 10
   generatePlants: 0
+  positionRandomizeValue: 1
 --- !u!4 &1554263158
 Transform:
   m_ObjectHideFlags: 0
@@ -432,20 +438,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd800d4ebcb85649ac4cdbe66645eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 250
-  distance: 100
+  size: 200
+  distance: 10
   filter: {fileID: 1644493906}
   shapePrefabs:
   - type: 0
     radius: 35
     percent: 10
-    height: 0.4
+    height: 1
     heightMap: {fileID: 2800000, guid: 7b5eed9df3a7aa6449e0d07af3eee9e7, type: 3}
     up: 1
   - type: 0
-    radius: 30
+    radius: 45
     percent: 10
-    height: 0.6
+    height: 0.8
     heightMap: {fileID: 2800000, guid: 2c3ea984308f31945ad3f47526c68c0e, type: 3}
     up: 1
   - type: 0
@@ -461,8 +467,8 @@ MonoBehaviour:
     heightMap: {fileID: 0}
     up: 0
   - type: 1
-    radius: 20
-    percent: 5
+    radius: 30
+    percent: 3
     height: 0.7
     heightMap: {fileID: 2800000, guid: f5a3c840cb14d03439a089c9c980d690, type: 3}
     up: 0

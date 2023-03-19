@@ -119,7 +119,7 @@ public class Calculation
 
         float result =  heightMap[(int) hPos.x, (int) hPos.y];
 
-        if(!up) result -=1;
+        if(!up) result -= 1;
 
         result *= radius * height * vertexDistance;
 
