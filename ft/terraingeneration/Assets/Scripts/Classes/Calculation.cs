@@ -38,55 +38,12 @@ public class Calculation
                     lastRadius = checkRadius;
                     
                 }
-
-                
-
-                
             }
 
             i += lastRadius / 2;
         }
 
         return shapes;
-    }
-    public static Vector3[] ArrangeVertexHeights(Vector3[] vertices, List<Shape> shapes, float distanceBetweenVertices)
-    {
-        Vector3[] result = vertices;
-
-        for(int i=0; i<shapes.Count; i++)
-            {
-                int range = shapes[i].radius;
-                Vector2 center = GetXZ(shapes[i].center);
-
-                float height = shapes[i].height;
-
-                bool hasHeightMap = false;
-                if(shapes[i].heightMap != null) hasHeightMap = true;
-                for(int k=0; k<vertices.Length; k++)
-                {
-                    Vector2 vec = GetXZ(vertices[k]);
-                    float distance = ( center - vec).magnitude;
-
-                    if(distance < range * distanceBetweenVertices)
-                    {
-                        if(!hasHeightMap)
-                        {
-                            result[k] = new Vector3(vec.x, GetHeight(height * distanceBetweenVertices, distance , range * distanceBetweenVertices, shapes[i].up), vec.y);
-                            //new GameObject(result[k]+" "+distance);
-                        }
-                        else
-                        {
-                            result[k] = new Vector3(vec.x, GetHeight(center, vec, shapes[i].heightMap, range, shapes[i].up, shapes[i].height, distanceBetweenVertices), vec.y);
-                            //new GameObject(result[k]+" "+distance);
-                        }
-
-                    }
-                }
-            }
-
-        
-
-        return result;
     }
 
     public static Vector2 GetXZ(Vector3 vec)

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
@@ -18,11 +20,13 @@ public class TerrainGenerator : MonoBehaviour
 
     public List<Shape> shapes = new List<Shape>();
 
-    public ShapePrefab[] shapePrefabs;
+    public TerrainShapeData[] shapePrefabs;
 
     public PlantGenerator planter;
 
+    public int spawnCount;
 
+    
     void Start()
     {
         PreparePrefabs();
@@ -68,18 +72,148 @@ public class TerrainGenerator : MonoBehaviour
         }
     }
 
+    void GenerateTerrain()
+    {
+        ArrangeVertices(transform.position);
+
+        ArrangeTriangles();
+
+        ArrangeAreas();
+
+        ArrangeUVs();
+
+        RefreshMesh();
+
+        
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            SaveMesh();
+        }
+    }
+
     void ArrangeAreas()
     {
+        int count = 0;
 
-        shapes = Calculation.ArrangeAreas(shapePrefabs, size, distance);
+        while(true)
+        {
+            var prefab = Data();
 
-        vertices = Calculation.ArrangeVertexHeights(vertices, shapes, distance);
+            count++;
+
+            int i = Random.Range(0, size);
+            int k = Random.Range(0, size);
+
+
+            for (int j = 0; j < prefab._heightMap.GetLength(0); j++)
+            {
+                for (int l = 0; l < prefab._heightMap.GetLength(0); l++)
+                {
+                    int index = (i + j) * (size + 1) + k + l;
+
+                    if (index >= vertices.Length)
+                    {
+                        break;
+                    }
+
+                    Vector3 vec = vertices[index];
+                    vec.y += prefab._heightMap[j, l];
+
+                    vertices[index] = vec;
+                }
+            }
+
+            if (count == spawnCount) return;
+        }
+
+        /*for(int i=0; i<size;)
+        {
+            for(int k=0; k<size;)
+            {
+                var prefab = Data();
+
+                for(int j=0; j<prefab._heightMap.GetLength(0); j++)
+                {
+                    for(int l=0; l<prefab._heightMap.GetLength(0); l++)
+                    {
+                        int index = ( i + j ) * (size + 1) + k + l;
+
+                        if(index >= vertices.Length)
+                        {
+                            break;
+                        }
+
+                        Vector3 vec = vertices[index];
+                        vec.y += prefab._heightMap[j, l];
+
+                        vertices[index] = vec;
+                    }
+                }
+
+                k += prefab._heightMap.GetLength(0);
+
+            }
+            i += 90;
+
+        }*/
+    }
+
+    TerrainShapeData Data()
+    {
+        int[] percents = new int[shapePrefabs.Length];
+
+        int last = 0;
+
+        for (int i = 0; i < shapePrefabs.Length; i++)
+        {
+            int percent = shapePrefabs[i].percent;
+
+            last += percent;
+
+            percents[i] = last;
+        }
+
+        int random = Random.Range(0, last);
+
+        for (int i = 0; i < percents.Length; i++)
+        {
+            if (random < percents[i])
+            {
+                return shapePrefabs[i];
+            }
+        }
+
+        // Fallback (shouldn't reach here)
+        return shapePrefabs[shapePrefabs.Length - 1];
+    }
+
+    void ArrangeVertices(Vector3 center)
+    {
+        vertices = new Vector3[(size + 1) * (size + 1)];
+        int index = 0;
+
+        Vector3 half = new Vector3(size * distance, 0, size * distance) / 2f;
+
+        for (int i = 0; i < size + 1; i++)
+        {
+            for (int k = 0; k < size + 1; k++)
+            {
+                Vector3 pos = new Vector3(k * distance, 0, i * distance) + center;
+                vertices[index] = pos - half;
+                index++;
+            }
+        }
     }
 
     void RefreshMesh()
     {
         mesh = new Mesh();
 
+        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
         mesh.vertices = vertices;
 
@@ -90,6 +224,7 @@ public class TerrainGenerator : MonoBehaviour
         mesh.RecalculateNormals();
 
         filter.mesh = mesh;
+
     }
 
     void ArrangeUVs()
@@ -119,44 +254,29 @@ public class TerrainGenerator : MonoBehaviour
         {
             uvS[i] = new Vector2(Mathf.Abs(vertices[i].x / xDiff), Mathf.Abs(vertices[i].z / zDiff));
         }
+
     }
 
-    void GenerateTerrain()
+    public void SaveMesh()
     {
-        ArrangeVertices(transform.position);
-
-        ArrangeTriangles();
-
-        ArrangeAreas();
-
-        ArrangeUVs();
-
-        RefreshMesh();
-    }
-
-    void ArrangeVertices(Vector3 center)
-    {
-        vertices = new Vector3[(size + 1) * (size + 1)];
-        int index = 0;
-        for (int i = 0; i < size + 1; i++)
+        if (mesh == null)
         {
-            for (int k = 0; k < size + 1; k++)
-            {
-                Vector3 pos = new Vector3(k * distance, 0, i * distance) + center;
-                vertices[index] = pos;
-                index++;
-            }
+            Debug.LogError("No mesh to save.");
+            return;
         }
-        
-    }
 
+        string path = EditorUtility.SaveFilePanelInProject(
+            "Save Mesh",
+            mesh.name + ".asset",
+            "asset",
+            "Please enter a file name to save the mesh."
+        );
 
-    /*void OnDrawGizmos()
-    {
-        if(triangles != null)
-        for(int i=0; i<triangles.Length; i++)
+        if (!string.IsNullOrEmpty(path))
         {
-            if( i < triangles.Length-2 ) Gizmos.DrawLine(vertices[triangles[i]], vertices[triangles[i+1]]);
+            AssetDatabase.CreateAsset(mesh, path);
+            AssetDatabase.SaveAssets();
+            Debug.Log("Mesh saved to: " + path);
         }
-    }*/
+    }
 }
