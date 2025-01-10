@@ -21,7 +21,7 @@ public class TerrainBake : MonoBehaviour
     Vector2[] uvS;
 
     [SerializeField]
-    Terrain terrain;
+    MeshFilter f;
 
 
     void Start()
@@ -93,7 +93,7 @@ public class TerrainBake : MonoBehaviour
 
     void ArrangeVertices(Vector3 center)
     {
-        distance = terrain.terrainData.size.x / (float) size;
+        distance = f.mesh.bounds.size.x / (float) size;
 
         vertices = new Vector3[(size + 1) * (size + 1)];
         int index = 0;
